@@ -24,9 +24,26 @@ export const toDecimal = (amount: BigNumber | string, decimals: number) => {
   return output;
 };
 
-export const numberWithCommas = (x: string | number | BigNumber) => {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-};
+export const numberWithCommas = (number: string | number | BigNumber) => {
+  const numberAsString = number.toString();
+  const numberLength = numberAsString.length; 
+  if(numberLength < 4 || numberAsString.includes('.')){
+    return numberAsString;
+  }
+  const startFrom = numberLength%3;
+  let numberWithComa = '';
+  let comaIndex = 0;
+  for(let i = 0; i < numberLength;i++){
+    if(startFrom === i || i !== 0 && comaIndex === 3){
+      numberWithComa += ',' + numberAsString[i];
+      comaIndex = 1;
+    }else{
+      numberWithComa += numberAsString[i];
+      comaIndex++
+    }
+  }
+  return numberWithComa;
+}
 
 export const formatNumber = (
   number: BigNumber | string,
